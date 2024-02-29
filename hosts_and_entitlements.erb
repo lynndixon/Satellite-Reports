@@ -1,0 +1,30 @@
+<%#
+name: Hosts and Entitlements
+snippet: false
+model: ReportTemplate
+-%>
+<%- load_hosts.each_record do |host| -%>
+<%-   report_row(
+        'hostname': host.name,
+        'Name': host.name,
+        'OS': host.operatingsystem,
+        #'Kernel': host.facts["ansible_kernel"],
+        'IP': host.facts["ansible_default_ipv4::address"],
+        'Organization': host.organization,
+        'Lifecycle': host.lifecycle_environment,
+        #'Content View': host.content_view,
+        'Virtual': host.virtual,
+        'Guest of': host.hypervisor_host,
+        'Sockets': host.sockets,
+        'Cores': host.cores,      
+        'Memory': host.ram,
+        'Compute': host.compute_resource,
+        'SLA': host_sla(host),
+        #'Hostgroup': host.hostgroup.title,
+        'Owner': host.owner,
+        'Project': host.params['custom_project'],
+        'Stage': host.params['custom_stage'],
+        'Products': host_products_names(host).to_s,
+      ) -%>
+<%- end -%>
+<%= report_render -%>
